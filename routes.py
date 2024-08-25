@@ -1,34 +1,33 @@
-from flask import render_template, request, redirect, url_for
-from app import app, db
-from app.models import User
+from flask import Blueprint, render_template, request, redirect, url_for
+from models import db, User
 
-@app.route('/')
-def home():
+bp = Blueprint('main', __name__)
+
+@bp.route('/')
+def index():
     users = User.query.all()
     return render_template('index.html', users=users)
 
-@app.route('/add_user', methods=['POST'])
+@bp.route('/add', methods=['POST'])
 def add_user():
-    email = request.form['email']
-    name = request.form['name']
-    new_user = User(email=email, name=name)
+    name = request.form.get('name')
+    email = request.form.get('email')
+    new_user = User(name=name, email=email)
     db.session.add(new_user)
     db.session.commit()
-    return redirect(url_for('home'))
+    return redirect(url_for('main.index'))
 
-@app.route('/delete_user/<int:id>')
+@bp.route('/update/<int:id>', methods=['POST'])
+def update_user(id):
+    user = User.query.get(id)
+    user.name = request.form.get('name')
+    user.email = request.form.get('email')
+    db.session.commit()
+    return redirect(url_for('main.index'))
+
+@bp.route('/delete/<int:id>')
 def delete_user(id):
-    user = User.query.get_or_404(id)
+    user = User.query.get(id)
     db.session.delete(user)
     db.session.commit()
-    return redirect(url_for('home'))
-
-@app.route('/update_user/<int:id>', methods=['GET', 'POST'])
-def update_user(id):
-    user = User.query.get_or_404(id)
-    if request.method == 'POST':
-        user.email = request.form['email']
-        user.name = request.form['name']
-        db.session.commit()
-        return redirect(url_for('home'))
-    return render_template('update_user.html', user=user)
+    return redirect(url_for('main.index'))
