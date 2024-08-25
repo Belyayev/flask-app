@@ -27,6 +27,10 @@
         background-color: #333333;
         border: 1px solid #444444;
       }
+      .add-user-button-container {
+        display: flex;
+        justify-content: flex-end;
+      }
     </style>
   </head>
   <body class="bg-dark text-white">
@@ -53,7 +57,9 @@
             placeholder="Enter email"
           />
         </div>
-        <button type="submit" class="btn btn-primary">Add User</button>
+        <div class="add-user-button-container">
+          <button type="submit" class="btn btn-primary">Add User</button>
+        </div>
       </form>
       <ul class="list-group mt-4">
         {% for user in users %}
