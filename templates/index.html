@@ -4,30 +4,78 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>User Management</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap Dark Mode -->
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap-dark.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background-color: #121212;
+        color: #ffffff;
+      }
+      .form-control {
+        background-color: #333333;
+        color: #ffffff;
+      }
+      .list-group-item {
+        background-color: #333333;
+        border: 1px solid #444444;
+      }
+    </style>
   </head>
-  <body>
-    <h1>User Management</h1>
-    <form action="/add" method="post">
-      <input type="text" name="name" placeholder="Name" required />
-      <input type="email" name="email" placeholder="Email" required />
-      <button type="submit">Add User</button>
-    </form>
-    <ul>
-      {% for user in users %}
-      <li>
-        {{ user.name }} - {{ user.email }}
-        <form
-          action="/update/{{ user.id }}"
-          method="post"
-          style="display: inline"
-        >
-          <input type="text" name="name" value="{{ user.name }}" required />
-          <input type="email" name="email" value="{{ user.email }}" required />
-          <button type="submit">Update</button>
-        </form>
-        <a href="/delete/{{ user.id }}">Delete</a>
-      </li>
-      {% endfor %}
-    </ul>
+  <body class="bg-dark text-white">
+    <div class="container mt-5">
+      <h1 class="text-center">User Management</h1>
+      <form action="/add" method="POST">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            name="name"
+            placeholder="Enter name"
+          />
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            name="email"
+            placeholder="Enter email"
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">Add User</button>
+      </form>
+      <ul class="list-group mt-4">
+        {% for user in users %}
+        <li class="list-group-item bg-dark text-white">
+          {{ user.name }} - {{ user.email }}
+          <a
+            href="/update/{{ user.id }}"
+            class="btn btn-secondary btn-sm float-right ml-2"
+            >Update</a
+          >
+          <a
+            href="/delete/{{ user.id }}"
+            class="btn btn-danger btn-sm float-right"
+            >Delete</a
+          >
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   </body>
 </html>
